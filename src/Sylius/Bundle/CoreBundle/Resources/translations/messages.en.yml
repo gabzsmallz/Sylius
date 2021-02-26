@@ -32,6 +32,7 @@ sylius:
                 street: Street
                 tax_id: Tax ID
             contact_email: Contact email
+            contact_phone_number: Contact phone number
             countries: Countries
             currencies: Currencies
             currency_base: Base currency
@@ -122,6 +123,7 @@ sylius:
             shipping_required: Is shipping required?
             weight: Weight
             width: Width
+            tracked_help: If this option is enabled Sylius will keep track of the stock and will stop selling the product once stock reaches 0.
         attribute:
             product_attribute_value:
                 attribute: Attribute
@@ -217,7 +219,7 @@ sylius:
                 help: Timezone %timezone% is deprecated. Fix your php.ini file (list of deprecated timezones http://php.net/manual/en/timezones.others.php).
             version: PHP version
             version_recommended: Recommended PHP version
-            version_help: Sylius reccomends %recommended% PHP version, your current version is %current%. Please upgrade.
+            version_help: Sylius recommends %recommended% PHP version, your current version is %current%. Please upgrade.
 
     payum_gateway:
         cash_on_delivery: Cash on delivery

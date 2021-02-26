@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\UiBundle\Registry;
 
-use Zend\Stdlib\SplPriorityQueue;
+use Laminas\Stdlib\SplPriorityQueue;
 
+/**
+ * @experimental
+ */
 final class TemplateBlockRegistry implements TemplateBlockRegistryInterface
 {
     /**

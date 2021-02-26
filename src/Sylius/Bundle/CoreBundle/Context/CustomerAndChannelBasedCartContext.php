@@ -42,9 +42,6 @@ final class CustomerAndChannelBasedCartContext implements CartContextInterface
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         try {
@@ -58,7 +55,7 @@ final class CustomerAndChannelBasedCartContext implements CartContextInterface
             throw new CartNotFoundException('Sylius was not able to find the cart, as there is no logged in user.');
         }
 
-        $cart = $this->orderRepository->findLatestCartByChannelAndCustomer($channel, $customer);
+        $cart = $this->orderRepository->findLatestNotEmptyCartByChannelAndCustomer($channel, $customer);
         if (null === $cart) {
             throw new CartNotFoundException('Sylius was not able to find the cart for currently logged in user.');
         }

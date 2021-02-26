@@ -161,6 +161,14 @@ final class ManagingOrdersContext implements Context
     }
 
     /**
+     * @When I choose :methodName as a shipping method filter
+     */
+    public function iChooseMethodAsAShippingMethodFilter($methodName)
+    {
+        $this->indexPage->chooseShippingMethodFilter($methodName);
+    }
+
+    /**
      * @When I choose :currencyName as the filter currency
      */
     public function iChooseCurrencyAsTheFilterCurrency($currencyName)
@@ -214,6 +222,14 @@ final class ManagingOrdersContext implements Context
     public function iShouldSeeASingleOrderFromCustomer(CustomerInterface $customer)
     {
         Assert::true($this->indexPage->isSingleResourceOnPage(['customer' => $customer->getEmail()]));
+    }
+
+    /**
+     * @Then I should see a single order in the list
+     */
+    public function iShouldSeeASingleOrderInTheList(): void
+    {
+        Assert::same($this->indexPage->countItems(), 1);
     }
 
     /**
@@ -290,7 +306,6 @@ final class ManagingOrdersContext implements Context
     /**
      * @Then /^it should have (\d+) items$/
      * @Then I should see :amount orders in the list
-     * @Then I should see a single order in the list
      */
     public function itShouldHaveAmountOfItems($amount = 1)
     {
@@ -322,11 +337,19 @@ final class ManagingOrdersContext implements Context
     }
 
     /**
-     * @Then there should be a shipping charge :shippingCharge
+     * @Then there should be a shipping charge :shippingCharge for :shippingMethodName method
      */
-    public function theOrdersShippingChargesShouldBe($shippingCharge)
+    public function thereShouldBeAShippingChargeForMethod(string $shippingCharge, string $shippingMethodName): void
     {
-        Assert::true($this->showPage->hasShippingCharge($shippingCharge));
+        Assert::true($this->showPage->hasShippingCharge($shippingCharge, $shippingMethodName));
+    }
+
+    /**
+     * @Then there should be a shipping tax :shippingTax for :shippingMethodName method
+     */
+    public function thereShouldBeAShippingTaxForMethod(string $shippingTax, string $shippingMethodName): void
+    {
+        Assert::true($this->showPage->hasShippingTax($shippingTax, $shippingMethodName));
     }
 
     /**

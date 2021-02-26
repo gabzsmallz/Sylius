@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Sylius\Bundle\CoreBundle\OAuth;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwnerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
@@ -29,7 +29,9 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\Component\User\Canonicalizer\CanonicalizerInterface;
 use Sylius\Component\User\Model\UserOAuthInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class UserProviderSpec extends ObjectBehavior
 {
@@ -222,5 +224,11 @@ final class UserProviderSpec extends ObjectBehavior
         $userRepository->findOneByEmail(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(UsernameNotFoundException::class)->during('loadUserByOAuthUserResponse', [$response]);
+    }
+
+    function it_should_throw_exception_when_unsupported_user_is_used(
+        UserInterface $user
+    ): void {
+        $this->shouldThrow(UnsupportedUserException::class)->during('refreshUser', [$user]);
     }
 }

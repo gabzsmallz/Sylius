@@ -51,7 +51,7 @@ final class CartContext implements Context
     }
 
     /**
-     * @When I see the summary of my cart
+     * @When /^I see the summary of my (?:|previous )cart$/
      */
     public function iOpenCartSummaryPage()
     {
@@ -68,6 +68,7 @@ final class CartContext implements Context
 
     /**
      * @Then my cart should be empty
+     * @Then my cart should be cleared
      * @Then cart should be empty with no value
      */
     public function iShouldBeNotifiedThatMyCartIsEmpty()
@@ -89,6 +90,7 @@ final class CartContext implements Context
 
     /**
      * @Given I change :productName quantity to :quantity
+     * @Given I change product :productName quantity to :quantity in my cart
      */
     public function iChangeQuantityTo($productName, $quantity)
     {
@@ -237,9 +239,11 @@ final class CartContext implements Context
 
     /**
      * @Given /^I (?:add|added) (this product) to the cart$/
+     * @Given /^I have (product "[^"]+") added to the cart$/
      * @Given I added product :product to the cart
      * @Given /^I (?:have|had) (product "[^"]+") in the cart$/
      * @Given the customer added :product product to the cart
+     * @Given /^I (?:add|added) ("[^"]+" product) to the (cart)$/
      * @When I add product :product to the cart
      */
     public function iAddProductToTheCart(ProductInterface $product): void
@@ -265,6 +269,7 @@ final class CartContext implements Context
      * @When I add :variantName variant of product :product to the cart
      * @When /^I add "([^"]+)" variant of (this product) to the cart$/
      * @Given I have :variantName variant of product :product in the cart
+     * @Given /^I have "([^"]+)" variant of (this product) in the cart$/
      */
     public function iAddProductToTheCartSelectingVariant($variantName, ProductInterface $product)
     {
@@ -272,6 +277,13 @@ final class CartContext implements Context
         $this->productShowPage->addToCartWithVariant($variantName);
 
         $this->sharedStorage->set('product', $product);
+        foreach ($product->getVariants() as $variant) {
+            if ($variant->getName() === $variantName) {
+                $this->sharedStorage->set('variant', $variant);
+
+                break;
+            }
+        }
     }
 
     /**
@@ -297,6 +309,7 @@ final class CartContext implements Context
 
     /**
      * @Then /^I should be(?: on| redirected to) my cart summary page$/
+     * @Then I should not be able to address an order with an empty cart
      */
     public function shouldBeOnMyCartSummaryPage()
     {
@@ -347,10 +360,14 @@ final class CartContext implements Context
 
     /**
      * @Given I have :product with :productOption :productOptionValue in the cart
+     * @Given I have product :product with product option :productOption :productOptionValue in the cart
      * @When I add :product with :productOption :productOptionValue to the cart
      */
-    public function iAddThisProductWithToTheCart(ProductInterface $product, ProductOptionInterface $productOption, $productOptionValue)
-    {
+    public function iAddThisProductWithToTheCart(
+        ProductInterface $product,
+        ProductOptionInterface $productOption,
+        string $productOptionValue
+    ): void {
         $this->productShowPage->open(['slug' => $product->getSlug()]);
 
         $this->productShowPage->addToCartWithOption($productOption, $productOptionValue);

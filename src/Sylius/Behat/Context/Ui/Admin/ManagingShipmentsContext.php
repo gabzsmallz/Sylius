@@ -98,6 +98,14 @@ final class ManagingShipmentsContext implements Context
     }
 
     /**
+     * @When I choose :shippingMethodName as a shipping method filter
+     */
+    public function iChooseAsAShippingMethodFilter(string $shippingMethodName): void
+    {
+        $this->indexPage->chooseShippingMethodFilter($shippingMethodName);
+    }
+
+    /**
      * @When I filter
      */
     public function iFilter(): void
@@ -205,8 +213,8 @@ final class ManagingShipmentsContext implements Context
     /**
      * @Then I should see the shipment of order :orderNumber shipped at :dateTime
      */
-    public function iShouldSeeTheShippingDateeAs(string $orderNumber, string $dateTme): void
+    public function iShouldSeeTheShippingDateAs(string $orderNumber, string $dateTime): void
     {
-        Assert::same($this->indexPage->getShippedAtDate($orderNumber), $dateTme);
+        Assert::same($this->indexPage->getShippedAtDate($orderNumber), $dateTime);
     }
 }

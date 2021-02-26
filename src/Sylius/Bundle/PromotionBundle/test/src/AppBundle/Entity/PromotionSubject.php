@@ -10,14 +10,6 @@
  */
 
 declare(strict_types=1);
-/*
- * This file is part of the Sylius package.
- *
- * (c) Paweł Jędrzejewski
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace AppBundle\Entity;
 
@@ -38,25 +30,16 @@ class PromotionSubject implements ResourceInterface, PromotionSubjectInterface
      */
     protected $promotions;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPromotion(PromotionInterface $promotion): bool
     {
         return $this->promotions->contains($promotion);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addPromotion(PromotionInterface $promotion): void
     {
         if (!$this->hasPromotion($promotion)) {
@@ -64,9 +47,6 @@ class PromotionSubject implements ResourceInterface, PromotionSubjectInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removePromotion(PromotionInterface $promotion): void
     {
         if ($this->hasPromotion($promotion)) {
@@ -74,17 +54,11 @@ class PromotionSubject implements ResourceInterface, PromotionSubjectInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPromotions(): Collection
     {
         return $this->promotions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPromotionSubjectTotal(): int
     {
         return 0;

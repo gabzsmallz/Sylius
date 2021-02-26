@@ -47,6 +47,7 @@ final class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('driver')->defaultValue(SyliusResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->booleanNode('prepend_doctrine_migrations')->defaultTrue()->end()
             ->end()
         ;
 
@@ -86,6 +87,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(AvatarImage::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(AvatarImageRepository::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->end()
                                     ->end()
                                 ->end()
                             ->end()

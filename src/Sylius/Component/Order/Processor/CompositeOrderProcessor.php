@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Order\Processor;
 
 use Sylius\Component\Order\Model\OrderInterface;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeOrderProcessor implements OrderProcessorInterface
 {
@@ -35,9 +35,6 @@ final class CompositeOrderProcessor implements OrderProcessorInterface
         $this->orderProcessors->insert($orderProcessor, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $order): void
     {
         foreach ($this->orderProcessors as $orderProcessor) {

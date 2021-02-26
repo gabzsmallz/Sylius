@@ -27,13 +27,12 @@ final class PriceExtension extends AbstractExtension
         $this->helper = $helper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters(): array
     {
         return [
             new TwigFilter('sylius_calculate_price', [$this->helper, 'getPrice']),
+            new TwigFilter('sylius_calculate_original_price', [$this->helper, 'getOriginalPrice']),
+            new TwigFilter('sylius_has_discount', [$this->helper, 'hasDiscount']),
         ];
     }
 }

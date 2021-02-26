@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Tests\Controller;
 
-use Lakion\ApiTestCase\JsonApiTestCase;
+use ApiTestCase\JsonApiTestCase;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -162,6 +162,7 @@ EOT;
             "menuTaxon": "mugs",
             "color": "ClassicBlue",
             "contactEmail": "admin@quickmart.eu",
+            "contactPhoneNumber": "11331122",
             "skippingShippingStepAllowed": true,
             "skippingPaymentStepAllowed": true,
             "accountVerificationRequired": false

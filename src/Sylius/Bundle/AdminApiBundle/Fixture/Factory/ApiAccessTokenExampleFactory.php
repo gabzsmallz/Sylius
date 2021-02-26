@@ -57,9 +57,6 @@ class ApiAccessTokenExampleFactory extends AbstractExampleFactory
         $this->configureOptions($this->optionsResolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(array $options = []): AccessTokenInterface
     {
         $options = $this->optionsResolver->resolve($options);
@@ -78,9 +75,6 @@ class ApiAccessTokenExampleFactory extends AbstractExampleFactory
         return $accessToken;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -98,7 +92,7 @@ class ApiAccessTokenExampleFactory extends AbstractExampleFactory
             })
             ->setDefault('client', LazyOption::randomOne($this->clientRepository))
             ->setAllowedTypes('client', ['string', ClientInterface::class, 'null'])
-            ->setNormalizer('client', LazyOption::findOneBy($this->clientRepository, 'randomId'))
+            ->setNormalizer('client', LazyOption::getOneBy($this->clientRepository, 'randomId'))
             ->setDefault('expires_at', null)
             ->setAllowedTypes('expires_at', ['null', \DateTimeInterface::class])
         ;

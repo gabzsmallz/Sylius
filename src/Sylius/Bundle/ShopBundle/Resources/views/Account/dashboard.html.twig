@@ -1,5 +1,7 @@
 {% extends '@SyliusShop/Account/layout.html.twig' %}
 
+{% block title %}{{ 'sylius.ui.my_account'|trans }} | {{ parent() }}{% endblock %}
+
 {% block breadcrumb %}
     <div class="ui breadcrumb">
         <a href="{{ path('sylius_shop_homepage') }}" class="section">{{ 'sylius.ui.home'|trans }}</a>
@@ -14,7 +16,7 @@
         <div class="sub header">{{ 'sylius.ui.manage_your_personal_information_and_preferences'|trans }}</div>
     </h1>
 
-    {{ sonata_block_render_event('sylius.shop.account.dashboard.after_content_header', {'customer': customer}) }}
+    {{ sylius_template_event('sylius.shop.account.dashboard.after_content_header', {'customer': customer}) }}
 
     <div class="ui large list" id="customer-information" {{ sylius_test_html_attribute('customer-information') }}>
         <div class="item">
@@ -34,7 +36,7 @@
         </div>
     </div>
 
-    {{ sonata_block_render_event('sylius.shop.account.dashboard.after_information', {'customer': customer}) }}
+    {{ sylius_template_event('sylius.shop.account.dashboard.after_information', {'customer': customer}) }}
 
     <div class="ui text menu">
         <a href="{{ path('sylius_shop_account_profile_update') }}" class="item"><i class="pencil icon"></i> {{ 'sylius.ui.edit'|trans }}</a>

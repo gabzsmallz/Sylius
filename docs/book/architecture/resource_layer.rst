@@ -156,7 +156,7 @@ Displaying a resource with a custom template and repository methods:
 
 .. code-block:: yaml
 
-    # routing.yml
+    # config/routes.yaml
     app_product_show:
         path: /products/{slug}
         methods: [GET]
@@ -172,7 +172,7 @@ Creating a product using custom form and a redirection method:
 
 .. code-block:: yaml
 
-    # routing.yml
+    # config/routes.yaml
     app_product_create:
         path: /my-stores/{store}/products/new
         methods: [GET, POST]
@@ -188,6 +188,6 @@ Creating a product using custom form and a redirection method:
                     route: app_product_index # Redirect the user to their products.
                     parameters: [$store]
 
-All other methods have the same level of flexibility and are documented in the :doc:`Resource Bundle Guide </components_and_bundles/bundles/SyliusResourceBundle/index>`.
+All other methods have the same level of flexibility and are documented in the `SyliusResourceBundle <https://github.com/Sylius/SyliusResourceBundle/blob/master/docs/index.md>`_.
 
 .. _`ObjectManager`: http://www.doctrine-project.org/api/common/2.4/class-Doctrine.Common.Persistence.ObjectManager.html

@@ -27,13 +27,11 @@ use Webmozart\Assert\Assert;
 
 final class SetupCommand extends AbstractInstallCommand
 {
-    /**
-     * {@inheritdoc}
-     */
+    protected static $defaultName = 'sylius:install:setup';
+
     protected function configure(): void
     {
         $this
-            ->setName('sylius:install:setup')
             ->setDescription('Sylius configuration setup.')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command allows user to configure basic Sylius data.
@@ -42,9 +40,6 @@ EOT
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $currency = $this->getContainer()->get('sylius.setup.currency')->setup($input, $output, $this->getHelper('question'));

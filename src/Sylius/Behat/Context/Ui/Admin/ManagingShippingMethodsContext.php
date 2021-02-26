@@ -98,9 +98,9 @@ final class ManagingShippingMethodsContext implements Context
     }
 
     /**
-     * @When I define it for the :zoneName zone
+     * @When I define it for the zone named :zoneName
      */
-    public function iDefineItForTheZone($zoneName)
+    public function iDefineItForTheZone(string $zoneName): void
     {
         $this->createPage->chooseZone($zoneName);
     }
@@ -215,7 +215,7 @@ final class ManagingShippingMethodsContext implements Context
     }
 
     /**
-     * @Then the code field should be disabled
+     * @Then I should not be able to edit its code
      */
     public function theCodeFieldShouldBeDisabled()
     {
@@ -409,11 +409,11 @@ final class ManagingShippingMethodsContext implements Context
     }
 
     /**
-     * @When I switch the way shipping methods are sorted by :field
-     * @When I start sorting shipping methods by :field
-     * @Given the shipping methods are already sorted by :field
+     * @When I switch the way shipping methods are sorted :sortType by :field
+     * @When I sort the shipping methods :sortType by :field
+     * @Given the shipping methods are already sorted :sortType by :field
      */
-    public function iSortShippingMethodsBy($field)
+    public function iSortShippingMethodsBy(string $sortType, string $field): void
     {
         $this->indexPage->sortBy($field);
     }
@@ -502,6 +502,42 @@ final class ManagingShippingMethodsContext implements Context
             $currentPage->getValidationMessageForAmount($channel->getCode()),
             'Shipping charge cannot be lower than 0.'
         );
+    }
+
+    /**
+     * @When I add the "Total weight greater than or equal" rule configured with :weight
+     */
+    public function iAddTheTotalWeightGreaterThanOrEqualRuleConfiguredWith(int $weight): void
+    {
+        $this->createPage->addRule('Total weight greater than or equal');
+        $this->createPage->fillRuleOption('Weight', (string) $weight);
+    }
+
+    /**
+     * @When I add the "Total weight less than or equal" rule configured with :weight
+     */
+    public function iAddTheTotalWeightLessThanOrEqualRuleConfiguredWith(int $weight): void
+    {
+        $this->createPage->addRule('Total weight less than or equal');
+        $this->createPage->fillRuleOption('Weight', (string) $weight);
+    }
+
+    /**
+     * @When /^I add the "Order total greater than or equal" rule configured with (?:€|£|\$)([^"]+) for "([^"]+)" channel$/
+     */
+    public function iAddTheOrderTotalGreaterThanOrEqualRuleConfiguredWith($value, string $channel): void
+    {
+        $this->createPage->addRule('Order total greater than or equal');
+        $this->createPage->fillRuleOptionForChannel($channel, 'Amount', (string) $value);
+    }
+
+    /**
+     * @When /^I add the "Order total less than or equal" rule configured with (?:€|£|\$)([^"]+) for "([^"]+)" channel$/
+     */
+    public function iAddTheOrderTotalLessThanOrEqualRuleConfiguredWith($value, string $channel): void
+    {
+        $this->createPage->addRule('Order total less than or equal');
+        $this->createPage->fillRuleOptionForChannel($channel, 'Amount', (string) $value);
     }
 
     /**

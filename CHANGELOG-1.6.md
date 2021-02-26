@@ -1,5 +1,64 @@
 # CHANGELOG FOR `1.6.X`
 
+## v1.6.9 (2020-10-19)
+
+#### Details
+
+- [#11369](https://github.com/Sylius/Sylius/issues/11369) [Docs] Don't use $HOME in SymfonyCloud deployment cookbook ([@tucksaun](https://github.com/tucksaun))
+- [#11387](https://github.com/Sylius/Sylius/issues/11387) Remove the doc reference to a promotion action that no longer exists in Core. ([@gabiudrescu](https://github.com/gabiudrescu))
+- [#11391](https://github.com/Sylius/Sylius/issues/11391) Fallback to the locale code if the associated name isn't found ([@dunglas](https://github.com/dunglas))
+- [#11390](https://github.com/Sylius/Sylius/issues/11390) Bug #9738 Fix nested form collections ([@vic-blt](https://github.com/vic-blt))
+- [#11403](https://github.com/Sylius/Sylius/issues/11403) Fix Autolabeler configuration ([@Zales0123](https://github.com/Zales0123))
+- [#11416](https://github.com/Sylius/Sylius/issues/11416) doc : add the composer dump-autoload instruction ([@davidroberto](https://github.com/davidroberto))
+- [#11450](https://github.com/Sylius/Sylius/issues/11450) [Docs] Enable redirections on ReadTheDocs ([@pamil](https://github.com/pamil))
+- [#11452](https://github.com/Sylius/Sylius/issues/11452) [Docs] Fix redirection for backwards compatibility promise ([@pamil](https://github.com/pamil))
+- [#11944](https://github.com/Sylius/Sylius/issues/11944) [Shop] Disabling customer when email has been changed ([@lchrusciel](https://github.com/lchrusciel))
+
+## v1.6.8 (2020-04-21)
+
+#### Details
+
+- [#11018](https://github.com/Sylius/Sylius/issues/11018) Fix: Check PropertyPath value for add error to form ([@Coosos](https://github.com/Coosos))
+- [#11191](https://github.com/Sylius/Sylius/issues/11191) Separated order items subtotal calculation logic from twig extension ([@4c0n](https://github.com/4c0n))
+- [#11341](https://github.com/Sylius/Sylius/issues/11341) [Maintenance] Upgrade packages dependencies & fix 1.6 build ([@lchrusciel](https://github.com/lchrusciel))
+- [#11342](https://github.com/Sylius/Sylius/issues/11342) [Maintenance] Remove memory swap ([@lchrusciel](https://github.com/lchrusciel))
+- [#11346](https://github.com/Sylius/Sylius/issues/11346) [ADMIN] fix closed gateway config field in payment method form ([@bigboss86](https://github.com/bigboss86))
+- [#11363](https://github.com/Sylius/Sylius/issues/11363) Introduce Probot Autolabeler ([@Zales0123](https://github.com/Zales0123))
+- [#11364](https://github.com/Sylius/Sylius/issues/11364) fix #11362 : ignore channel locale listener on profiler routes ([@thi3rry](https://github.com/thi3rry))
+- [#11380](https://github.com/Sylius/Sylius/issues/11380) Use !default for SCSS variables to allow overriding them ([@pamil](https://github.com/pamil))
+
+## v1.6.7 (2020-03-31)
+
+#### Details
+
+- [#11168](https://github.com/Sylius/Sylius/issues/11168) [Docs] Remove sensio.sphinx.refinclude ([@Tomanhez](https://github.com/Tomanhez))
+- [#11111](https://github.com/Sylius/Sylius/issues/11111) [Docs] Recommend trait usage in Plugin Development Guide ([@Zales0123](https://github.com/Zales0123))
+- [#11147](https://github.com/Sylius/Sylius/issues/11147) [Plus Docs] Installation guide improvement and Administrator Roles ([@CoderMaggie](https://github.com/CoderMaggie))
+- [#11169](https://github.com/Sylius/Sylius/issues/11169) [missing return] Update basic-usage ([@DurandSacha](https://github.com/DurandSacha))
+- [#11146](https://github.com/Sylius/Sylius/issues/11146) [Behat][Admin] Fix step with checking number of orders in the list ([@GSadee](https://github.com/GSadee))
+- [#11177](https://github.com/Sylius/Sylius/issues/11177) [Documentation] Sylius Plus docs part 2; including fixes to links ([@CoderMaggie](https://github.com/CoderMaggie))
+- [#11181](https://github.com/Sylius/Sylius/issues/11181) Sylius Plus feature scope update ([@dukusz](https://github.com/dukusz))
+- [#11179](https://github.com/Sylius/Sylius/issues/11179) [Maintenance] Remove uneeded step ([@lchrusciel](https://github.com/lchrusciel))
+- [#11192](https://github.com/Sylius/Sylius/issues/11192) Fixtures: fix French translation of cap ([@dunglas](https://github.com/dunglas))
+- [#11299](https://github.com/Sylius/Sylius/issues/11299) Remove useless interface in custom_fixture.rst ([@dunglas](https://github.com/dunglas))
+- [#11304](https://github.com/Sylius/Sylius/issues/11304) [Docs] Require tagged plugins for Sylius Store ([@Zales0123](https://github.com/Zales0123))
+- [#11310](https://github.com/Sylius/Sylius/issues/11310) Install symfony/polyfill-php80 to fix the psalm build ([@Zales0123](https://github.com/Zales0123))
+
+## v1.6.6 (2020-02-28)
+
+#### Details
+
+- [#11065](https://github.com/Sylius/Sylius/issues/11065) user provider fix exception ([@oallain](https://github.com/oallain))
+- [#11079](https://github.com/Sylius/Sylius/issues/11079) [Docs] Add organization section to The Book + set up Sphinx redirections ([@pamil](https://github.com/pamil))
+- [#11095](https://github.com/Sylius/Sylius/issues/11095) [Promotion] Generating long coupons ([@oallain](https://github.com/oallain), [@GSadee](https://github.com/GSadee))
+- [#11097](https://github.com/Sylius/Sylius/issues/11097) [Composer] Add conflicts to fix build for Symfony 3.4 ([@GSadee](https://github.com/GSadee))
+- [#11113](https://github.com/Sylius/Sylius/issues/11113) [Docs][Plus] Splitting shipments ([@CoderMaggie](https://github.com/CoderMaggie))
+- [#11114](https://github.com/Sylius/Sylius/issues/11114) Fixed wrongly calculated order-item subtotal ([@peterukena](https://github.com/peterukena))
+- [#11119](https://github.com/Sylius/Sylius/issues/11119) [Docs] Sphinx instalation guide  ([@Tomanhez](https://github.com/Tomanhez))
+- [#11130](https://github.com/Sylius/Sylius/issues/11130) Add documentation to deploy Sylius to SymfonyCloud ([@tucksaun](https://github.com/tucksaun))
+- [#11137](https://github.com/Sylius/Sylius/issues/11137) [Docs] Improve installation steps ([@lchrusciel](https://github.com/lchrusciel))
+- [#11142](https://github.com/Sylius/Sylius/issues/11142) [Docs] Mention Minimum stability in plus installation ([@Zales0123](https://github.com/Zales0123))
+
 ## v1.6.5 (2020-01-27)
 
 #### CVE-2020-5218: Ability to switch channels via GET parameter enabled in production environments

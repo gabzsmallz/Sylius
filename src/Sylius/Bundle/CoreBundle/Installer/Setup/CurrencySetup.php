@@ -20,7 +20,8 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 
 final class CurrencySetup implements CurrencySetupInterface
 {
@@ -40,9 +41,6 @@ final class CurrencySetup implements CurrencySetupInterface
         $this->currency = trim($currency);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setup(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): CurrencyInterface
     {
         $code = $this->getCurrencyCodeFromUser($input, $output, $questionHelper);
@@ -90,6 +88,10 @@ final class CurrencySetup implements CurrencySetupInterface
 
     private function getCurrencyName(string $code): ?string
     {
-        return Intl::getCurrencyBundle()->getCurrencyName($code);
+        try {
+            return Currencies::getName($code);
+        } catch (MissingResourceException $exception) {
+            return null;
+        }
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
 use Sylius\Component\Core\Model\AdminUserInterface;
@@ -66,7 +66,7 @@ final class AdminUserContext implements Context
     public function thereIsAnAdministratorIdentifiedBy($email, $password = 'sylius')
     {
         /** @var AdminUserInterface $adminUser */
-        $adminUser = $this->userFactory->create(['email' => $email, 'password' => $password, 'enabled' => true]);
+        $adminUser = $this->userFactory->create(['email' => $email, 'password' => $password, 'enabled' => true, 'api' => true]);
 
         $this->userRepository->add($adminUser);
         $this->sharedStorage->set('administrator', $adminUser);

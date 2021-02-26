@@ -18,7 +18,6 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Order\Context\CartNotFoundException;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Webmozart\Assert\Assert;
 
@@ -39,8 +38,17 @@ final class UserCartRecalculationListener
     /**
      * @param InteractiveLoginEvent|UserEvent $event
      */
-    public function recalculateCartWhileLogin(Event $event): void
+    public function recalculateCartWhileLogin(object $event): void
     {
+        /** @psalm-suppress DocblockTypeContradiction */
+        if (!$event instanceof InteractiveLoginEvent && !$event instanceof UserEvent) {
+            throw new \TypeError(sprintf(
+                '$event needs to be an instance of "%s" or "%s"',
+                InteractiveLoginEvent::class,
+                UserEvent::class
+            ));
+        }
+
         try {
             $cart = $this->cartContext->getCart();
         } catch (CartNotFoundException $exception) {

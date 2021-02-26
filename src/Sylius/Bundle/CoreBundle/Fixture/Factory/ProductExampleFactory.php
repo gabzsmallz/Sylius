@@ -140,9 +140,6 @@ class ProductExampleFactory extends AbstractExampleFactory implements ExampleFac
         $this->configureOptions($this->optionsResolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(array $options = []): ProductInterface
     {
         $options = $this->optionsResolver->resolve($options);
@@ -164,14 +161,14 @@ class ProductExampleFactory extends AbstractExampleFactory implements ExampleFac
         return $product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefault('name', function (Options $options): string {
-                return $this->faker->words(3, true);
+                /** @var string $words */
+                $words = $this->faker->words(3, true);
+
+                return $words;
             })
 
             ->setDefault('code', function (Options $options): string {
@@ -193,7 +190,10 @@ class ProductExampleFactory extends AbstractExampleFactory implements ExampleFac
             })
 
             ->setDefault('description', function (Options $options): string {
-                return $this->faker->paragraphs(3, true);
+                /** @var string $paragraphs */
+                $paragraphs = $this->faker->paragraphs(3, true);
+
+                return $paragraphs;
             })
 
             ->setDefault('main_taxon', LazyOption::randomOne($this->taxonRepository))
@@ -360,21 +360,27 @@ class ProductExampleFactory extends AbstractExampleFactory implements ExampleFac
     {
         $productAttributesValues = [];
         foreach ($productAttributes as $code => $value) {
+            /** @var ProductAttributeInterface|null $productAttribute */
+            $productAttribute = $this->productAttributeRepository->findOneBy(['code' => $code]);
+
+            Assert::notNull($productAttribute, sprintf('Can not find product attribute with code: "%s"', $code));
+
+            if (!$productAttribute->isTranslatable()) {
+                $productAttributesValues[] = $this->configureProductAttributeValue($productAttribute, null, $value);
+
+                continue;
+            }
+
             foreach ($this->getLocales() as $localeCode) {
-                $productAttributesValues[] = $this->configureProductAttributeValue($code, $localeCode, $value);
+                $productAttributesValues[] = $this->configureProductAttributeValue($productAttribute, $localeCode, $value);
             }
         }
 
         return $productAttributesValues;
     }
 
-    private function configureProductAttributeValue(string $code, string $localeCode, $value): ProductAttributeValueInterface
+    private function configureProductAttributeValue(ProductAttributeInterface $productAttribute, ?string $localeCode, $value): ProductAttributeValueInterface
     {
-        /** @var ProductAttributeInterface|null $productAttribute */
-        $productAttribute = $this->productAttributeRepository->findOneBy(['code' => $code]);
-
-        Assert::notNull($productAttribute);
-
         /** @var ProductAttributeValueInterface $productAttributeValue */
         $productAttributeValue = $this->productAttributeValueFactory->createNew();
         $productAttributeValue->setAttribute($productAttribute);

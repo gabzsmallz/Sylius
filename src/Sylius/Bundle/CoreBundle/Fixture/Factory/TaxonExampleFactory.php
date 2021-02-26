@@ -60,9 +60,6 @@ class TaxonExampleFactory extends AbstractExampleFactory implements ExampleFacto
         $this->configureOptions($this->optionsResolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(array $options = []): TaxonInterface
     {
         return $this->createTaxon($options);
@@ -115,14 +112,14 @@ class TaxonExampleFactory extends AbstractExampleFactory implements ExampleFacto
         $taxon->setSlug($options['slug'] ?: $this->taxonSlugGenerator->generate($taxon, $localeCode));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefault('name', function (Options $options): string {
-                return $this->faker->words(3, true);
+                /** @var string $words */
+                $words = $this->faker->words(3, true);
+
+                return $words;
             })
             ->setDefault('code', function (Options $options): string {
                 return StringInflector::nameToCode($options['name']);

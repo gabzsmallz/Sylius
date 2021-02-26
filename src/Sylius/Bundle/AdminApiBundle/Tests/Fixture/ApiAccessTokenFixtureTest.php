@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\AdminApiBundle\Tests\Fixture;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\AdminApiBundle\Fixture\ApiAccessTokenFixture;
@@ -71,9 +71,6 @@ final class ApiAccessTokenFixtureTest extends TestCase
         ]]]], 'custom.*.expires_at');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration(): ApiAccessTokenFixture
     {
         return new ApiAccessTokenFixture(

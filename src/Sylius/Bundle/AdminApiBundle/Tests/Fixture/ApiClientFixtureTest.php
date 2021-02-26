@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\AdminApiBundle\Tests\Fixture;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\AdminApiBundle\Fixture\ApiClientFixture;
@@ -63,9 +63,6 @@ final class ApiClientFixtureTest extends TestCase
         ]]]], 'custom.*.allowed_grant_types');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration(): ApiClientFixture
     {
         return new ApiClientFixture(

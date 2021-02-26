@@ -45,6 +45,17 @@ class IndexPage extends SymfonyPage implements IndexPageInterface
         return $this->tableAccessor->countTableBodyRows($this->getElement('customer_orders'));
     }
 
+    public function changePaymentMethod(OrderInterface $order): void
+    {
+        $row = $this->tableAccessor->getRowWithFields(
+            $this->getElement('customer_orders'),
+            ['number' => $order->getNumber()]
+        );
+
+        $link = $row->find('css', '[data-test-button="sylius.ui.pay"]');
+        $link->click();
+    }
+
     public function isOrderWithNumberInTheList($number): bool
     {
         try {
@@ -59,19 +70,9 @@ class IndexPage extends SymfonyPage implements IndexPageInterface
         }
     }
 
-    public function isItPossibleToChangePaymentMethodForOrder(OrderInterface $order): bool
-    {
-        $row = $this->tableAccessor->getRowWithFields(
-            $this->getElement('customer_orders'),
-            ['number' => $order->getNumber()]
-        );
-
-        return $row->hasLink('Pay');
-    }
-
     public function openLastOrderPage(): void
     {
-        $this->getElement('last_order')->clickLink('Show');
+        $this->getElement('last_order')->find('css', '[data-test-button="sylius.ui.show"]')->click();
     }
 
     protected function getDefinedElements(): array

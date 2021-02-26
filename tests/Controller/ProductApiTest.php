@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Tests\Controller;
 
-use Lakion\ApiTestCase\JsonApiTestCase;
+use ApiTestCase\JsonApiTestCase;
 use Sylius\Component\Product\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -396,7 +396,7 @@ EOT;
     /**
      * @test
      */
-    public function it_allows_creating_product_with_attributes()
+    public function it_allows_creating_product_with_attributes(): void
     {
         $this->loadFixturesFromFile('authentication/api_administrator.yml');
         $this->loadFixturesFromFile('resources/locales.yml');
@@ -416,6 +416,11 @@ EOT;
                     "attribute": "mug_collection",
                     "localeCode": "en_US",
                     "value": "make life harder"
+                },
+                {
+                    "attribute": "mug_size",
+                    "localeCode": null,
+                    "value": "L"
                 }
             ],
             "translations": {
@@ -451,7 +456,7 @@ EOT;
                     "attribute": "mug_color",
                     "localeCode": "en_US",
                     "value": [
-                        "7a968ac4-a1e3-4a37-a707-f22a839130c4", 
+                        "7a968ac4-a1e3-4a37-a707-f22a839130c4",
                         "ff62a939-d946-4d6b-b742-b7115875ae75"
                     ]
                 }

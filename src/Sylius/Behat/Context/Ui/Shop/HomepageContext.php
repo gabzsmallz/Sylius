@@ -34,7 +34,7 @@ final class HomepageContext implements Context
 
     /**
      * @When I check latest products
-     * @When I visit the homepage
+     * @When I check available taxons
      */
     public function iCheckLatestProducts(): void
     {
@@ -58,6 +58,7 @@ final class HomepageContext implements Context
     }
 
     /**
+     * @Then I should see :firstMenuItem in the menu
      * @Then I should see :firstMenuItem and :secondMenuItem in the menu
      */
     public function iShouldSeeAndInTheMenu(string ...$menuItems): void
@@ -67,6 +68,8 @@ final class HomepageContext implements Context
 
     /**
      * @Then I should not see :firstMenuItem and :secondMenuItem in the menu
+     * @Then I should not see :firstMenuItem, :secondMenuItem and :thirdMenuItem in the menu
+     * @Then I should not see :firstMenuItem, :secondMenuItem, :thirdMenuItem and :fourthMenuItem in the menu
      */
     public function iShouldNotSeeAndInTheMenu(string ...$menuItems): void
     {
@@ -76,5 +79,14 @@ final class HomepageContext implements Context
                 throw new \InvalidArgumentException(sprintf('Menu should not contain %s element', $menuItem));
             }
         }
+    }
+
+    /**
+     * @Then I should be logged in
+     */
+    public function iShouldBeLoggedIn(): void
+    {
+        $this->homePage->verify();
+        Assert::true($this->homePage->hasLogoutButton());
     }
 }

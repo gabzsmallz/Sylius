@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Locale\Model;
 
 use Sylius\Component\Resource\Model\TimestampableTrait;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Locales;
 
 class Locale implements LocaleInterface
 {
@@ -36,35 +36,23 @@ class Locale implements LocaleInterface
         return (string) $this->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCode(?string $code): void
     {
         $this->code = $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(?string $locale = null): ?string
     {
-        return Intl::getLocaleBundle()->getLocaleName($this->getCode(), $locale);
+        return Locales::getName($this->getCode(), $locale);
     }
 }

@@ -157,6 +157,14 @@ final class AddressBookContext implements Context
     }
 
     /**
+     * @When I do not specify province
+     */
+    public function iDoNotSpecifyProvince(): void
+    {
+        // Intentionally left empty
+    }
+
+    /**
      * @When I add it
      */
     public function iAddIt()
@@ -203,10 +211,30 @@ final class AddressBookContext implements Context
     }
 
     /**
+     * @Then it should contain country :countryName
+     */
+    public function itShouldContainCountry(string $countryName): void
+    {
+        $fullName = $this->sharedStorage->get('full_name');
+
+        Assert::true($this->addressBookIndexPage->addressOfContains($fullName, strtoupper($countryName)));
+    }
+
+    /**
+     * @Then it should contain province :provinceName
+     */
+    public function itShouldContainProvince(string $provinceName): void
+    {
+        $fullName = $this->sharedStorage->get('full_name');
+
+        Assert::true($this->addressBookIndexPage->addressOfContains($fullName, $provinceName));
+    }
+
+    /**
      * @Then this address should be assigned to :fullName
      * @Then /^the address assigned to "([^"]+)" should (appear|be) in my book$/
      */
-    public function thisAddressShouldHavePersonFirstNameAndLastName($fullName)
+    public function thisAddressShouldBeAssignedTo(string $fullName): void
     {
         Assert::true($this->addressBookIndexPage->hasAddressOf($fullName));
     }
@@ -256,9 +284,9 @@ final class AddressBookContext implements Context
     /**
      * @Then /^I should be notified about (\d+) errors$/
      */
-    public function iShouldBeNotifiedAboutErrors($expectedCount)
+    public function iShouldBeNotifiedAboutErrors(int $expectedCount): void
     {
-        Assert::same($this->addressBookCreatePage->countValidationMessages(), (int) $expectedCount);
+        Assert::same($this->addressBookCreatePage->countValidationMessages(), $expectedCount);
     }
 
     /**
@@ -340,6 +368,7 @@ final class AddressBookContext implements Context
 
     /**
      * @Then /^(address "[^"]+", "[^"]+", "[^"]+", "[^"]+", "[^"]+"(?:|, "[^"]+")) should(?:| still) be marked as my default address$/
+     * @Then /^(address "[^"]+", "[^"]+", "[^"]+", "[^"]+", "[^"]+"(?:|, "[^"]+")) should(?:| still) be set as my default address$/
      */
     public function addressShouldBeMarkedAsMyDefaultAddress(AddressInterface $address)
     {

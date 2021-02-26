@@ -25,12 +25,9 @@ final class PasswordUpdater implements PasswordUpdaterInterface
         $this->userPasswordEncoder = $passwordEncoder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updatePassword(CredentialsHolderInterface $user): void
     {
-        if ('' !== $user->getPlainPassword()) {
+        if (!in_array($user->getPlainPassword(), ['', null], true)) {
             $user->setPassword($this->userPasswordEncoder->encode($user));
             $user->eraseCredentials();
         }

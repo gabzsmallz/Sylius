@@ -33,17 +33,18 @@ final class CustomerContext implements CustomerContextInterface
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomer(): ?BaseCustomerInterface
     {
         if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 
-        if ($token->getUser() instanceof ShopUserInterface && $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $token->getUser()->getCustomer();
+        $user = $token->getUser();
+        if (
+            $user instanceof ShopUserInterface &&
+            $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
+        ) {
+            return $user->getCustomer();
         }
 
         return null;

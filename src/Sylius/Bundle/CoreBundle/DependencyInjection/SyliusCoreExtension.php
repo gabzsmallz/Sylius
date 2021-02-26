@@ -15,13 +15,14 @@ namespace Sylius\Bundle\CoreBundle\DependencyInjection;
 
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class SyliusCoreExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
+    use PrependDoctrineMigrationsTrait;
+
     /** @var array */
     private static $bundles = [
         'sylius_addressing',
@@ -44,12 +45,9 @@ final class SyliusCoreExtension extends AbstractResourceExtension implements Pre
         'sylius_variation',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $this->registerResources('sylius', $config['driver'], $config['resources'], $container);
@@ -62,32 +60,54 @@ final class SyliusCoreExtension extends AbstractResourceExtension implements Pre
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepend(ContainerBuilder $container): void
     {
         $config = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
-        foreach ($container->getExtensions() as $name => $extension) {
-            if (in_array($name, self::$bundles, true)) {
-                $container->prependExtensionConfig($name, ['driver' => $config['driver']]);
-            }
-        }
-
-        $container->prependExtensionConfig('sylius_theme', ['context' => 'sylius.theme.context.channel_based']);
-
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $this->prependHwiOauth($container, $loader);
+        $this->prependSyliusThemeBundle($container, $config['driver']);
+        $this->prependHwiOauth($container);
+        $this->prependDoctrineMigrations($container);
     }
 
-    private function prependHwiOauth(ContainerBuilder $container, LoaderInterface $loader): void
+    protected function getMigrationsNamespace(): string
+    {
+        return 'Sylius\Bundle\CoreBundle\Migrations';
+    }
+
+    protected function getMigrationsDirectory(): string
+    {
+        return '@SyliusCoreBundle/Migrations';
+    }
+
+    protected function getNamespacesOfMigrationsExecutedBefore(): array
+    {
+        return [];
+    }
+
+    private function prependHwiOauth(ContainerBuilder $container): void
     {
         if (!$container->hasExtension('hwi_oauth')) {
             return;
         }
 
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+
         $loader->load('services/integrations/hwi_oauth.xml');
+    }
+
+    private function prependSyliusThemeBundle(ContainerBuilder $container, string $driver): void
+    {
+        if (!$container->hasExtension('sylius_theme')) {
+            return;
+        }
+
+        foreach ($container->getExtensions() as $name => $extension) {
+            if (in_array($name, self::$bundles, true)) {
+                $container->prependExtensionConfig($name, ['driver' => $driver]);
+            }
+        }
+
+        $container->prependExtensionConfig('sylius_theme', ['context' => 'sylius.theme.context.channel_based']);
     }
 }

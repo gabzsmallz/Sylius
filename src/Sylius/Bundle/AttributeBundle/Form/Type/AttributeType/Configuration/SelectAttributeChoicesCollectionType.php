@@ -53,6 +53,7 @@ class SelectAttributeChoicesCollectionType extends AbstractType
                         continue;
                     }
 
+                    $key = (string) $key;
                     $newKey = $this->getUniqueKey();
                     $fixedData[$newKey] = $this->resolveValues($values);
 
@@ -70,17 +71,11 @@ class SelectAttributeChoicesCollectionType extends AbstractType
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return CollectionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'sylius_select_attribute_choices_collection';

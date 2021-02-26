@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\CoreBundle\OAuth;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
@@ -74,9 +74,6 @@ class UserProvider extends BaseUserProvider implements AccountConnectorInterface
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByOAuthUserResponse(UserResponseInterface $response): UserInterface
     {
         $oauth = $this->oauthRepository->findOneBy([
@@ -100,9 +97,6 @@ class UserProvider extends BaseUserProvider implements AccountConnectorInterface
         throw new UsernameNotFoundException('Email is null or not provided');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function connect(UserInterface $user, UserResponseInterface $response): void
     {
         $this->updateUserByOAuthUserResponse($user, $response);

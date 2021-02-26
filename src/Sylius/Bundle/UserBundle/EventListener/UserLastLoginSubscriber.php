@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\UserBundle\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\UserBundle\Event\UserEvent;
 use Sylius\Bundle\UserBundle\UserEvents;
 use Sylius\Component\User\Model\UserInterface;
@@ -35,9 +35,6 @@ final class UserLastLoginSubscriber implements EventSubscriberInterface
         $this->userClass = $userClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [

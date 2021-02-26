@@ -15,7 +15,7 @@ namespace Sylius\Bundle\AdminApiBundle\Command;
 
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use Sylius\Bundle\AdminApiBundle\Model\Client;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use SyliusLabs\Polyfill\Symfony\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,6 +28,8 @@ final class CreateClientCommand extends ContainerAwareCommand
     /** @var ClientManagerInterface|null */
     private $clientManager;
 
+    protected static $defaultName = 'sylius:oauth-server:create-client';
+
     public function __construct(?string $name = null, ClientManagerInterface $clientManager = null)
     {
         parent::__construct($name);
@@ -35,13 +37,9 @@ final class CreateClientCommand extends ContainerAwareCommand
         $this->clientManager = $clientManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
-            ->setName('sylius:oauth-server:create-client')
             ->setDescription('Creates a new client')
             ->addOption(
                 'redirect-uri',
@@ -62,9 +60,6 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (null === $this->clientManager) {

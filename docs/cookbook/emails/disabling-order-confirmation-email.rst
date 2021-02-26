@@ -42,7 +42,7 @@ This can be done via a CompilerPass.
 
     final class MailPass implements CompilerPassInterface
     {
-        public function process(ContainerBuilder $container)
+        public function process(ContainerBuilder $container): void
         {
             $container->removeDefinition('sylius.listener.order_complete');
         }
@@ -76,4 +76,4 @@ That's it, we have removed the definition of the listener that is responsible fo
 Learn more
 ----------
 
-* `Compiler passes in the Symfony documentation <http://symfony.com/doc/current/service_container/compiler_passes.html>`_
+* `Compiler passes in the Symfony documentation <https://symfony.com/doc/current/service_container/compiler_passes.html>`_

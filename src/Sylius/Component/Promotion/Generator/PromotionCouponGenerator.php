@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Promotion\Generator;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Promotion\Exception\FailedGenerationException;
 use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Sylius\Component\Promotion\Model\PromotionInterface;
@@ -47,9 +47,6 @@ final class PromotionCouponGenerator implements PromotionCouponGeneratorInterfac
         $this->generationPolicy = $generationPolicy;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(PromotionInterface $promotion, PromotionCouponGeneratorInstructionInterface $instruction): array
     {
         $generatedCoupons = [];

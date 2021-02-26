@@ -96,9 +96,6 @@ final class DefaultUnitedStatesChannelFactory implements DefaultChannelFactoryIn
         $this->defaultLocaleCode = $defaultLocaleCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(?string $code = null, ?string $name = null, ?string $currencyCode = null): array
     {
         $currency = $this->provideCurrency($currencyCode);
@@ -110,6 +107,7 @@ final class DefaultUnitedStatesChannelFactory implements DefaultChannelFactoryIn
         $channel->addLocale($locale);
         $channel->setDefaultLocale($locale);
         $channel->setTaxCalculationStrategy('order_items_based');
+        $channel->setHostname('us.store.com');
 
         $defaultData = [
             'channel' => $channel,

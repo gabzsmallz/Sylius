@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Channel\Context;
 
 use Sylius\Component\Channel\Model\ChannelInterface;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeChannelContext implements ChannelContextInterface
 {
@@ -35,9 +35,6 @@ final class CompositeChannelContext implements ChannelContextInterface
         $this->channelContexts->insert($channelContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChannel(): ChannelInterface
     {
         foreach ($this->channelContexts as $channelContext) {

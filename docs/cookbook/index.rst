@@ -79,6 +79,26 @@ Promotions
 
 .. include:: /cookbook/promotions/map.rst.inc
 
+Inventory
+---------
+
+.. toctree::
+    :hidden:
+
+    inventory/custom-inventory-sources-filter
+
+.. include:: /cookbook/inventory/map.rst.inc
+
+Shipping methods
+----------------
+
+.. toctree::
+    :hidden:
+
+    shipping-methods/custom-shipping-method-rule
+
+.. include:: /cookbook/shipping-methods/map.rst.inc
+
 Images
 ------
 
@@ -97,6 +117,7 @@ Deployment
 .. toctree::
     :hidden:
 
+    deployment/symfonycloud
     deployment/platform-sh
     deployment/cloudways
     deployment/cron-jobs
@@ -123,5 +144,6 @@ Frontend
 
     frontend/admin-js-and-css
     frontend/google-analytics.rst
+    frontend/webpack.rst
 
 .. include:: /cookbook/frontend/map.rst.inc

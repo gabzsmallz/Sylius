@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\ProductBundle\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Attribute\AttributeType\SelectAttributeType;
 use Sylius\Component\Product\Model\ProductAttributeInterface;
 use Sylius\Component\Product\Model\ProductAttributeValueInterface;
@@ -34,7 +34,6 @@ final class SelectProductAttributeChoiceRemoveListener
     {
         $productAttribute = $event->getEntity();
 
-        /** @var ProductAttributeInterface $productAttribute */
         if (!$productAttribute instanceof ProductAttributeInterface) {
             return;
         }

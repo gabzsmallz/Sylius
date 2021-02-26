@@ -14,16 +14,31 @@ declare(strict_types=1);
 namespace Sylius\Behat\Page\Shop\Product;
 
 use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Session;
+use DMore\ChromeDriver\ChromeDriver;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
+use Sylius\Behat\Page\Shop\Cart\SummaryPageInterface;
 use Sylius\Behat\Service\JQueryHelper;
 use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Product\Model\ProductOptionInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 class ShowPage extends SymfonyPage implements ShowPageInterface
 {
+    /** @var SummaryPageInterface */
+    private $summaryPage;
+
+    public function __construct(Session $session, $minkParameters, RouterInterface $router, SummaryPageInterface $summaryPage)
+    {
+        parent::__construct($session, $minkParameters, $router);
+
+        $this->summaryPage = $summaryPage;
+    }
+
     public function getRouteName(): string
     {
         return 'sylius_shop_product_show';
@@ -33,9 +48,7 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
     {
         $this->getElement('add_to_cart_button')->click();
 
-        if ($this->getDriver() instanceof Selenium2Driver) {
-            JQueryHelper::waitForAsynchronousActionsToFinish($this->getSession());
-        }
+        $this->waitForCartSummary();
     }
 
     public function addToCartWithQuantity(string $quantity): void
@@ -43,9 +56,7 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
         $this->getElement('quantity')->setValue($quantity);
         $this->getElement('add_to_cart_button')->click();
 
-        if ($this->getDriver() instanceof Selenium2Driver) {
-            JQueryHelper::waitForAsynchronousActionsToFinish($this->getSession());
-        }
+        $this->waitForCartSummary();
     }
 
     public function addToCartWithVariant(string $variant): void
@@ -54,9 +65,7 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
 
         $this->getElement('add_to_cart_button')->click();
 
-        if ($this->getDriver() instanceof Selenium2Driver) {
-            JQueryHelper::waitForAsynchronousActionsToFinish($this->getSession());
-        }
+        $this->waitForCartSummary();
     }
 
     public function addToCartWithOption(ProductOptionInterface $option, string $optionValue): void
@@ -65,6 +74,8 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
 
         $this->getDocument()->selectFieldOption($select->getAttribute('name'), $optionValue);
         $this->getElement('add_to_cart_button')->click();
+
+        $this->waitForCartSummary();
     }
 
     public function getAttributeByName(string $name): ?string
@@ -72,7 +83,7 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
         $attributesTable = $this->getElement('attributes');
 
         $driver = $this->getDriver();
-        if ($driver instanceof Selenium2Driver) {
+        if ($driver instanceof Selenium2Driver || $driver instanceof ChromeDriver) {
             try {
                 $attributesTab = $this->getElement('tab', ['%name%' => 'attributes']);
                 if (!$attributesTab->hasAttribute('[data-test-active]')) {
@@ -91,14 +102,14 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
 
         $row = $nameTd->getParent();
 
-        return trim($row->find('css', 'td.sylius-product-attribute-value')->getText());
+        return trim($row->find('css', '[data-test-product-attribute-value]')->getText());
     }
 
     public function getAttributes(): array
     {
         $attributesTable = $this->getElement('attributes');
 
-        return $attributesTable->findAll('css', 'tr > td[data-test-product-attribute-name]');
+        return $attributesTable->findAll('css', '[data-test-product-attribute-name]');
     }
 
     public function getAverageRating(): float
@@ -126,6 +137,20 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
     public function getPrice(): string
     {
         return $this->getElement('product_price')->getText();
+    }
+
+    public function getOriginalPrice(): string
+    {
+        return $this->getElement('product_original_price')->getText();
+    }
+
+    public function isOriginalPriceVisible(): bool
+    {
+        try {
+            return null !== $this->getElement('product_original_price')->find('css', 'del');
+        } catch (ElementNotFoundException $elementNotFoundException) {
+            return false;
+        }
     }
 
     public function hasAddToCartButton(): bool
@@ -214,7 +239,7 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
         $variantRadio = $this->getElement('variant_radio', ['%variantName%' => $variantName]);
 
         $driver = $this->getDriver();
-        if ($driver instanceof Selenium2Driver) {
+        if ($driver instanceof Selenium2Driver || $driver instanceof ChromeDriver) {
             $variantRadio->click();
 
             return;
@@ -248,6 +273,29 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
         }
     }
 
+    public function getVariantsNames(): array
+    {
+        $variantsNames = [];
+        /** @var NodeElement $variantRow */
+        foreach ($this->getElement('variants_rows')->findAll('css', 'td:first-child') as $variantRow) {
+            $variantsNames[] = $variantRow->getText();
+        }
+
+        return $variantsNames;
+    }
+
+    public function getOptionValues(string $optionCode): array
+    {
+        $optionElement = $this->getElement('option_select', ['%optionCode%' => strtoupper($optionCode)]);
+
+        return array_map(
+            function (NodeElement $element) {
+                return $element->getText();
+            },
+            $optionElement->findAll('css', 'option')
+        );
+    }
+
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
@@ -261,6 +309,7 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
             'option_select' => '#sylius_add_to_cart_cartItem_variant_%optionCode%',
             'out_of_stock' => '[data-test-product-out-of-stock]',
             'product_price' => '[data-test-product-price]',
+            'product_original_price' => '[data-test-product-original-price]',
             'product_name' => '[data-test-product-name]',
             'reviews' => '[data-test-product-reviews]',
             'reviews_comment' => '[data-test-comment="%title%"]',
@@ -269,6 +318,17 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
             'quantity' => '[data-test-quantity]',
             'validation_errors' => '[data-test-cart-validation-error]',
             'variant_radio' => '[data-test-product-variants] tbody tr:contains("%variantName%") input',
+            'variants_rows' => '[data-test-product-variants-row]',
         ]);
+    }
+
+    private function waitForCartSummary(): void
+    {
+        if ($this->getDriver() instanceof Selenium2Driver || $this->getDriver() instanceof ChromeDriver) {
+            JQueryHelper::waitForAsynchronousActionsToFinish($this->getSession());
+            $this->getDocument()->waitFor(3, function (): bool {
+                return $this->summaryPage->isOpen();
+            });
+        }
     }
 }

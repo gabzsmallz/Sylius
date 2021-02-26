@@ -13,31 +13,31 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\ProductBundle\Controller;
 
-use FOS\RestBundle\View\View;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductAttributeChoiceType;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Component\Attribute\Model\AttributeInterface;
+use Sylius\Component\Attribute\Model\AttributeValueInterface;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Product\Model\ProductAttributeInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Webmozart\Assert\Assert;
 
 class ProductAttributeController extends ResourceController
 {
     public function getAttributeTypesAction(Request $request, string $template): Response
     {
-        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
-
-        $view = View::create()
-            ->setTemplate($template)
-            ->setTemplateVar($this->metadata->getPluralName())
-            ->setData([
+        return $this->render(
+            $template,
+            [
                 'types' => $this->get('sylius.registry.attribute_type')->all(),
                 'metadata' => $this->metadata,
-            ])
-        ;
-
-        return $this->viewHandler->handle($configuration, $view);
+            ]
+        );
     }
 
     public function renderAttributesAction(Request $request): Response
@@ -89,14 +89,32 @@ class ProductAttributeController extends ResourceController
         $attributeForm = $this->get('sylius.form_registry.attribute_type')->get($attribute->getType(), 'default');
 
         $forms = [];
+
+        if (!$attribute->isTranslatable()) {
+            array_push($localeCodes, null);
+
+            return [null => $this->createFormAndView($attributeForm, $attribute)];
+        }
+
         foreach ($localeCodes as $localeCode) {
-            $forms[$localeCode] = $this
-                ->get('form.factory')
-                ->createNamed('value', $attributeForm, null, ['label' => $attribute->getName(), 'configuration' => $attribute->getConfiguration()])
-                ->createView()
-            ;
+            $forms[$localeCode] = $this->createFormAndView($attributeForm, $attribute);
         }
 
         return $forms;
+    }
+
+    private function createFormAndView(
+        $attributeForm,
+        AttributeInterface $attribute
+    ): FormView {
+        return $this
+            ->get('form.factory')
+            ->createNamed(
+                'value',
+                $attributeForm,
+                null,
+                ['label' => $attribute->getName(), 'configuration' => $attribute->getConfiguration()]
+            )
+            ->createView();
     }
 }

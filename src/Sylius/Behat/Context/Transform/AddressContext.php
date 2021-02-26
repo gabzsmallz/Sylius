@@ -16,6 +16,7 @@ namespace Sylius\Behat\Context\Transform;
 use Behat\Behat\Context\Context;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
 use Sylius\Component\Addressing\Converter\CountryNameConverterInterface;
+use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Repository\AddressRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Webmozart\Assert\Assert;
@@ -143,6 +144,21 @@ final class AddressContext implements Context
     {
         $address = $this->addressRepository->findOneBy(['street' => $street]);
         Assert::notNull($address, sprintf('Cannot find address by %s street.', $street));
+
+        return $address;
+    }
+
+    /**
+     * @Transform /^address of "([^"]+)"$/
+     * @Transform /^address belongs to "([^"]+)"$/
+     */
+    public function getByFullName(string $fullName): AddressInterface
+    {
+        [$firstName, $lastName] = explode(' ', $fullName);
+
+        /** @var AddressInterface $address */
+        $address = $this->addressRepository->findOneBy(['firstName' => $firstName, 'lastName' => $lastName]);
+        Assert::notNull($address, sprintf('Cannot find address by %s full name.', $fullName));
 
         return $address;
     }

@@ -50,9 +50,6 @@ class ProductAssociationExampleFactory extends AbstractExampleFactory implements
         $this->configureOptions($this->optionsResolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(array $options = []): ProductAssociationInterface
     {
         $options = $this->optionsResolver->resolve($options);
@@ -69,19 +66,16 @@ class ProductAssociationExampleFactory extends AbstractExampleFactory implements
         return $productAssociation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefault('type', LazyOption::randomOne($this->productAssociationTypeRepository))
             ->setAllowedTypes('type', ['string', ProductAssociationTypeInterface::class])
-            ->setNormalizer('type', LazyOption::findOneBy($this->productAssociationTypeRepository, 'code'))
+            ->setNormalizer('type', LazyOption::getOneBy($this->productAssociationTypeRepository, 'code'))
 
             ->setDefault('owner', LazyOption::randomOne($this->productRepository))
             ->setAllowedTypes('owner', ['string', ProductInterface::class])
-            ->setNormalizer('owner', LazyOption::findOneBy($this->productRepository, 'code'))
+            ->setNormalizer('owner', LazyOption::getOneBy($this->productRepository, 'code'))
 
             ->setDefault('associated_products', LazyOption::randomOnes($this->productRepository, 3))
             ->setAllowedTypes('associated_products', 'array')

@@ -31,10 +31,8 @@ There exists a commercial edition of Sylius, which is called `Sylius Plus <https
 Sylius Plus gives you all the power of Open Source and much more. It comes with a set of enterprise-grade features
 and technical support from its creators. As the state-of-the-art eCommerce platform, it reduces risks and increases your ROI.
 
-.. rst-class:: plus-feature
-
 In this documentation you will find also chapters dedicated to features introduced by the Sylius Plus edition, they will
-be marked with a frame just like this section, and a label like this ->
+be marked with a frame just like this section.
 
 The Three Natures of Sylius
 ---------------------------
@@ -64,7 +62,7 @@ Roadmap
 -------
 
 Are you wondering about Sylius plans for the next releases? If so then you should follow our `Roadmap <https://sylius.com/roadmap>`_.
-Through our :doc:`Slack and Forum </support/index>` you can contribute by conversation and votes on the most desired features and improvements.
+Through our :doc:`Slack and Forum </book/support/index>` you can contribute by conversation and votes on the most desired features and improvements.
 
 Final Thoughts
 --------------

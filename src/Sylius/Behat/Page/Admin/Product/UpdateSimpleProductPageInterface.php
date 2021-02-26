@@ -25,9 +25,9 @@ interface UpdateSimpleProductPageInterface extends BaseUpdatePageInterface
 
     public function isSlugReadonlyIn(string $locale): bool;
 
-    public function specifyPrice(string $channelName, string $price): void;
+    public function specifyPrice(ChannelInterface $channel, string $price): void;
 
-    public function specifyOriginalPrice(string $channelName, string $originalPrice): void;
+    public function specifyOriginalPrice(ChannelInterface $channel, string $originalPrice): void;
 
     public function nameItIn(string $name, string $localeCode): void;
 
@@ -42,6 +42,8 @@ interface UpdateSimpleProductPageInterface extends BaseUpdatePageInterface
     public function getNumberOfAttributes(): int;
 
     public function hasAttribute(string $attributeName): bool;
+
+    public function hasNonTranslatableAttributeWithValue(string $attributeName, string $value): bool;
 
     public function isMainTaxonChosen(string $taxonName): bool;
 
@@ -89,9 +91,9 @@ interface UpdateSimpleProductPageInterface extends BaseUpdatePageInterface
 
     public function specifySlugIn(string $slug, string $locale): void;
 
-    public function getPriceForChannel(string $channelName): string;
+    public function getPriceForChannel(ChannelInterface $channel): string;
 
-    public function getOriginalPriceForChannel(string $channelName): string;
+    public function getOriginalPriceForChannel(ChannelInterface $channel): string;
 
     public function isShippingRequired(): bool;
 
@@ -108,4 +110,12 @@ interface UpdateSimpleProductPageInterface extends BaseUpdatePageInterface
     public function showProductInChannel(string $channel): void;
 
     public function showProductInSingleChannel(): void;
+
+    public function disable(): void;
+
+    public function isEnabled(): bool;
+
+    public function enable(): void;
+
+    public function hasNoPriceForChannel(string $channelName): bool;
 }

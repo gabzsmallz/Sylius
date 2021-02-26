@@ -4,7 +4,7 @@ Sylius\Component\Core\Model\Taxon:
     properties:
         images:
             expose: true
-            type: array
+            type: iterable
             groups: [Default, Detailed]
     relations:
         -   rel: self
@@ -12,4 +12,3 @@ Sylius\Component\Core\Model\Taxon:
                 route: sylius_admin_api_taxon_show
                 parameters:
                     code: expr(object.getCode())
-                    version: 1

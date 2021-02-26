@@ -57,9 +57,6 @@ class AddressExampleFactory extends AbstractExampleFactory
         $this->configureOptions($this->optionsResolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -97,13 +94,10 @@ class AddressExampleFactory extends AbstractExampleFactory
             ->setAllowedTypes('province_code', ['null', 'string'])
             ->setDefault('customer', LazyOption::randomOne($this->customerRepository))
             ->setAllowedTypes('customer', ['string', CustomerInterface::class, 'null'])
-            ->setNormalizer('customer', LazyOption::findOneBy($this->customerRepository, 'email'))
+            ->setNormalizer('customer', LazyOption::getOneBy($this->customerRepository, 'email'))
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(array $options = []): AddressInterface
     {
         $options = $this->optionsResolver->resolve($options);
@@ -136,7 +130,7 @@ class AddressExampleFactory extends AbstractExampleFactory
     private function assertCountryCodeIsValid(string $code): void
     {
         $country = $this->countryRepository->findOneBy(['code' => $code]);
-        Assert::notNull($country);
+        Assert::notNull($country, sprintf('Trying to create address with invalid country code: "%s"', $code));
     }
 
     /**

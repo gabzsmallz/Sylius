@@ -37,10 +37,7 @@ final class ZoneChoiceTypeTest extends TypeTestCase
     /** @var ProphecyInterface|ZoneInterface */
     private $zoneShippingScope;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->zoneRepository = $this->prophesize(RepositoryInterface::class);
 
@@ -65,10 +62,7 @@ final class ZoneChoiceTypeTest extends TypeTestCase
         parent::setUp();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         $scopeTypes = [
             AddressingScope::ALL => 'All',
@@ -86,7 +80,7 @@ final class ZoneChoiceTypeTest extends TypeTestCase
     /**
      * @test
      */
-    public function it_returns_all_scopes_by_default()
+    public function it_returns_all_scopes_by_default(): void
     {
         $this->zoneRepository->findBy([])->willReturn([
             $this->zoneAllScopes->reveal(),
@@ -100,7 +94,7 @@ final class ZoneChoiceTypeTest extends TypeTestCase
     /**
      * @test
      */
-    public function it_returns_all_scopes_when_zone_scope_set_to_all()
+    public function it_returns_all_scopes_when_zone_scope_set_to_all(): void
     {
         $this->zoneRepository->findBy([])->willReturn([
             $this->zoneAllScopes->reveal(),
@@ -114,7 +108,7 @@ final class ZoneChoiceTypeTest extends TypeTestCase
     /**
      * @test
      */
-    public function it_returns_tax_scopes_when_zone_scope_set_to_tax()
+    public function it_returns_tax_scopes_when_zone_scope_set_to_tax(): void
     {
         $this->zoneRepository->findBy(['scope' => ['tax', AddressingScope::ALL]])->willReturn([
             $this->zoneAllScopes->reveal(),
@@ -127,7 +121,7 @@ final class ZoneChoiceTypeTest extends TypeTestCase
     /**
      * @test
      */
-    public function it_returns_shipping_scopes_when_zone_scope_set_to_shipping()
+    public function it_returns_shipping_scopes_when_zone_scope_set_to_shipping(): void
     {
         $this->zoneRepository->findBy(['scope' => ['shipping', AddressingScope::ALL]])->willReturn([
             $this->zoneAllScopes->reveal(),

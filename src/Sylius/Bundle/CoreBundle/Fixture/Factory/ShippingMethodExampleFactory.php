@@ -78,9 +78,6 @@ class ShippingMethodExampleFactory extends AbstractExampleFactory implements Exa
         $this->configureOptions($this->optionsResolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(array $options = []): ShippingMethodInterface
     {
         $options = $this->optionsResolver->resolve($options);
@@ -117,9 +114,6 @@ class ShippingMethodExampleFactory extends AbstractExampleFactory implements Exa
         return $shippingMethod;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -127,7 +121,10 @@ class ShippingMethodExampleFactory extends AbstractExampleFactory implements Exa
                 return StringInflector::nameToCode($options['name']);
             })
             ->setDefault('name', function (Options $options): string {
-                return $this->faker->words(3, true);
+                /** @var string $words */
+                $words = $this->faker->words(3, true);
+
+                return $words;
             })
             ->setDefault('description', function (Options $options): string {
                 return $this->faker->sentence();
@@ -138,7 +135,7 @@ class ShippingMethodExampleFactory extends AbstractExampleFactory implements Exa
             ->setAllowedTypes('enabled', 'bool')
             ->setDefault('zone', LazyOption::randomOne($this->zoneRepository))
             ->setAllowedTypes('zone', ['null', 'string', ZoneInterface::class])
-            ->setNormalizer('zone', LazyOption::findOneBy($this->zoneRepository, 'code'))
+            ->setNormalizer('zone', LazyOption::getOneBy($this->zoneRepository, 'code'))
             ->setDefined('tax_category')
             ->setAllowedTypes('tax_category', ['null', 'string', TaxCategoryInterface::class])
             ->setDefined('category')

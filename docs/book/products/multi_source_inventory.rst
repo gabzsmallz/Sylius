@@ -73,6 +73,14 @@ It's possible to add more inventory sources filter, with higher or lower priorit
 
    How to create a custom Inventory Sources Filter? Read :doc:`this Cookbook </cookbook/index>`.
 
+Resolving InventorySourceStock for ordered products
+---------------------------------------------------
+
+.. warning::
+
+    Standard Sylius distribution is releasing a stock inventory when the whole order is paid, while in Plus version,
+    it has been switched to be released after shipment has been shipped.
+
 Inventory API
 -------------
 
@@ -84,7 +92,7 @@ Sylius Plus provides a route that allows changing inventory source stock with an
 
 .. code-block:: bash
 
-   $ POST /api/v1/inventory-sources/{code}/update-stocks
+   POST /api/v1/inventory-sources/{code}/update-stocks
 
 The ``code`` is a code of inventory source on which stock is to be updated. Content of the request should contain an array
 of updated stocks, with the product variant code and target on hand value.
@@ -109,7 +117,7 @@ Example:
 .. warning::
 
    To use the Sylius Plus API, you need to be authorized as an administrator with the ``ROLE_API_ACCESS`` role.
-   Check out the :doc:`API Authorization chapter </api/authorization>`.
+   Check out the :doc:`API Authorization chapter </api/admin_api/authorization>`.
 
 How does Multi-Source Inventory work on examples?
 -------------------------------------------------
@@ -119,12 +127,51 @@ How does Multi-Source Inventory work on examples?
    You can see all use cases we have designed in Sylius Plus by browsing the Behat scenarios for inventory in the vendor package
    after installing Sylius Plus.
 
+Multi-source inventory fixtures
+-------------------------------
+
+Inventory Sources fixtures
+''''''''''''''''''''''''''
+
+This fixture creates Inventory Sources without products (empty) enabled in chosen channels:
+
+.. code-block:: yaml
+
+   hamburg_warehouse:
+      code: 'hamburg_warehouse'
+      name: 'Hamburg Warehouse'
+      channels:
+         - 'HOME_WEB'
+         - 'FASHION_WEB'
+
+
+Inventory Source Stocks fixtures
+''''''''''''''''''''''''''''''''
+
+This fixture adds inventory source stock to chosen Inventory Source, you can choose which taxons and channels you want
+to include in each inventory source.
+
+When declaring both options, a union of sets will be resolved.
+
+.. code-block:: yaml
+
+   stocks_in_frankfurt_warehouse:
+       inventory_source: 'frankfurt_warehouse'
+       products_from:
+           taxons_codes:
+               - 'caps'
+               - 'dresses'
+           channels_codes:
+               - 'HOME_WEB'
+               - 'FASHION_WEB'
+
 Learn more
 ----------
 
+* :doc:`Cookbook: How to create a custom inventory sources filter? </cookbook/inventory/custom-inventory-sources-filter>`
 * :doc:`Order concept documentation </book/orders/orders>`
 * :doc:`Single Source Inventory concept documentation </book/products/inventory>`
 
 .. image:: ../../_images/sylius_plus/banner.png
    :align: center
-   :target: http://sylius.com/plus/?utm_source=docs
+   :target: https://sylius.com/plus/?utm_source=docs

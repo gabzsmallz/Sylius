@@ -54,7 +54,7 @@ In order to override it you need to create your own: ``templates/bundles/SyliusS
 
 Copy the contents of the original template to make your work easier. And then modify it to your needs.
 
-.. code-block:: php
+.. code-block:: twig
 
     {% extends '@SyliusShop/layout.html.twig' %}
 
@@ -90,7 +90,7 @@ Done! If you do not see any changes on the ``/shop/login`` url, clear your cache
 
 .. code-block:: bash
 
-    $ php bin/console cache:clear
+    php bin/console cache:clear
 
 * **Admin** templates: Customization of the Country form view.
 
@@ -99,7 +99,7 @@ In order to override it you need to create your own: ``templates/bundles/SyliusA
 
 Copy the contents of the original template to make your work easier. And then modify it to your needs.
 
-.. code-block:: php
+.. code-block:: twig
 
     <div class="ui segment">
         {{ form_errors(form) }}
@@ -119,7 +119,7 @@ Done! If you do not see any changes on the ``/admin/countries/new`` url, clear y
 
 .. code-block:: bash
 
-    $ php bin/console cache:clear
+    php bin/console cache:clear
 
 How to customize templates via events?
 --------------------------------------
@@ -200,7 +200,7 @@ How to use themes for customizations?
 
 You can refer to the theme documentation available here:
 - :doc:`Themes (The book) </book/themes/themes>`
-- :doc:`SyliusThemeBundle (Bundle documentation) </components_and_bundles/bundles/SyliusThemeBundle/index>`
+- `SyliusThemeBundle (Bundle documentation) <https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/index.md>`_
 
 Global Twig variables
 ---------------------

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\AdminApiBundle\DependencyInjection;
 
+use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,12 +23,11 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class SyliusAdminApiExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container): void
+    use PrependDoctrineMigrationsTrait;
+
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $this->registerResources('sylius', $config['driver'], $config['resources'], $container);
@@ -36,12 +36,12 @@ final class SyliusAdminApiExtension extends AbstractResourceExtension implements
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws ServiceNotFoundException
      */
     public function prepend(ContainerBuilder $container): void
     {
+        $this->prependDoctrineMigrations($container);
+
         if (!$container->hasExtension('fos_oauth_server')) {
             throw new ServiceNotFoundException('FOSOAuthServerBundle must be registered in kernel.');
         }
@@ -60,5 +60,20 @@ final class SyliusAdminApiExtension extends AbstractResourceExtension implements
                 'client_manager' => 'sylius.oauth_server.client_manager',
             ],
         ]);
+    }
+
+    protected function getMigrationsNamespace(): string
+    {
+        return 'Sylius\Bundle\AdminApiBundle\Migrations';
+    }
+
+    protected function getMigrationsDirectory(): string
+    {
+        return '@SyliusAdminApiBundle/Migrations';
+    }
+
+    protected function getNamespacesOfMigrationsExecutedBefore(): array
+    {
+        return ['Sylius\Bundle\CoreBundle\Migrations'];
     }
 }

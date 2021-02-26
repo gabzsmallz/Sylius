@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Tests\Controller;
 
-use Lakion\ApiTestCase\JsonApiTestCase;
+use ApiTestCase\JsonApiTestCase;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -346,8 +346,8 @@ EOT;
 <<<EOT
         {
             "code": "MONSTER_MUG",
-            "optionValues": { 
-                "MUG_TYPE": "MUG_TYPE_MEDIUM" 
+            "optionValues": {
+                "MUG_TYPE": "MUG_TYPE_MEDIUM"
             }
         }
 EOT;
@@ -423,7 +423,7 @@ EOT;
 <<<EOT
         {
             "code": "NEW_MUG_CODE",
-            "version": $version
+            "version": "$version"
         }
 EOT;
         $this->client->request('PUT', $this->getVariantUrl($product, $productVariant), [], [], static::$authorizedHeaderWithContentType, $data);

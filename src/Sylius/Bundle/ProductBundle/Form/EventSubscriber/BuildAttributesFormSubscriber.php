@@ -40,9 +40,6 @@ final class BuildAttributesFormSubscriber implements EventSubscriberInterface
         $this->localeProvider = $localeProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -69,6 +66,7 @@ final class BuildAttributesFormSubscriber implements EventSubscriberInterface
             }
         );
 
+        /** @var ProductAttributeValueInterface $attribute */
         foreach ($attributes as $attribute) {
             $this->resolveLocalizedAttributes($product, $attribute);
         }
